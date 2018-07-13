@@ -1,6 +1,8 @@
 # Created by https://www.gitignore.io/api/laravel,netbeans
 
 ### Laravel ###
+=======
+>>>>>>> f13993760823b76ab5a623ef94f7cf2bc65d41c2
 vendor/
 node_modules/
 npm-debug.log
@@ -22,13 +24,3 @@ Homestead.json
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
-
-# End of https://www.gitignore.io/api/laravel,netbeans
