@@ -12,24 +12,28 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
     public function index() {
         return response()->json("", 204);
     }
-    public function getSystemProcessIdByIdHealthProfessional($idHealthProfessional) {
-      $result= Healthprofessionalbridgeprocess::getSystemProcessIdByIdHealthProfessionalModel($idHealthProfessional);
+    public function getSystemProcessIdByIdHealthProfessional(Request $request,$idHealthProfessional) {
+        
+      $idApp = $request->query('idApp', -1);
+      $result= Healthprofessionalbridgeprocess::getSystemProcessIdByIdHealthProfessionalModel($idHealthProfessional,$idApp);
         if(count($result)>0)
             return response()->json($result, 200);
         else
            return response()->json("", 204);
     }
 
-    public function getIdHealthProfessionalBySystemProcessId($systemProcessId) {
-        $result= Healthprofessionalbridgeprocess::getIdHealthProfessionalBySystemProcessIdModel($systemProcessId);
+    public function getIdHealthProfessionalBySystemProcessId(Request $request,$systemProcessId) {
+          $idApp = $request->query('idApp', -1);
+        $result= Healthprofessionalbridgeprocess::getIdHealthProfessionalBySystemProcessIdModel($systemProcessId,$idApp);
         if(count($result)>0)
            return response()->json($result, 200);
         else
            return response()->json("", 204);
     }
 
-    public function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId) {
-        $result= Healthprofessionalbridgeprocess::getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId);
+    public function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId(Request $request,$idHealthProfessional,$systemProcessId) {
+        $idApp = $request->query('idApp', -1);
+        $result= Healthprofessionalbridgeprocess::getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId,$idApp);
         if(count($result)>0)
            return response()->json($result, 200);
         else
@@ -46,6 +50,9 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
              
             $parametersToStore = ['idHealthProfessional' => $request->idHealthProfessional, 'systemProcessId' => $request->systemProcessId];
            
+            if($request->has('idApp'))
+                 $parametersToStore = ['idHealthProfessional' => $request->idHealthProfessional, 'systemProcessId' => $request->systemProcessId,'idApp'=>$request->idApp];
+          
             $result= Healthprofessionalbridgeprocess::healthProfessionalBridgeProcessCreateModel($parametersToMatch,$parametersToStore);
          
             if ($result == 1) 
@@ -56,5 +63,8 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
        
         return response()->json("", 204);
     }
+    
+    
+    
 
 }

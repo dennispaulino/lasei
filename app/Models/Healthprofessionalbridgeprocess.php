@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Healthprofessionalbridgeprocess
@@ -20,7 +21,7 @@ class Healthprofessionalbridgeprocess extends Model
     public $fillable = [
         'idHealthProfessional',
         'systemProcessId',
-    
+        'idApp'
     ];
 
     /**
@@ -41,29 +42,53 @@ class Healthprofessionalbridgeprocess extends Model
         
     ];
 
-    public static function getSystemProcessIdByIdHealthProfessionalModel($idHealthProfessional) 
+    public static function getSystemProcessIdByIdHealthProfessionalModel($idHealthProfessional,$idApp) 
     {
-
-          $parametersToMatch = ['idHealthProfessional' => $idHealthProfessional];
-          $result = Healthprofessionalbridgeprocess::where($parametersToMatch)->get();
-
+       $parametersToMatch=[];
+        
+        if($idApp==-1)
+             $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional' => $idHealthProfessional];
+        else
+             $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional' => $idHealthProfessional,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+        $result =  DB::table('healthprofessionalbridgeprocess')
+             ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
+            ->where($parametersToMatch)   
+            ->select('healthprofessionalbridgeprocess.*', 'systemprocess.externalProcessId')
+            ->get();
           return $result;
     }
     
-     public static function getIdHealthProfessionalBySystemProcessIdModel($systemProcessId) 
+     public static function getIdHealthProfessionalBySystemProcessIdModel($systemProcessId,$idApp) 
     {
-
-          $parametersToMatch = ['systemProcessId' => $systemProcessId];
-          $result = Healthprofessionalbridgeprocess::where($parametersToMatch)->get();
-
+        $parametersToMatch=[];
+        
+        if($idApp==-1)
+             $parametersToMatch = ['healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId];
+        else
+             $parametersToMatch = ['healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+       
+          $result =  DB::table('healthprofessionalbridgeprocess')
+             ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
+             ->where($parametersToMatch)   
+             ->select('healthprofessionalbridgeprocess.*', 'systemprocess.externalProcessId')
+                  ->get();
           return $result;
     }
     
-    public static function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId)
+    public static function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId,$idApp)
     {
-        $parametersToMatch = ['idHealthProfessional'=>$idHealthProfessional,'systemProcessId' => $systemProcessId];
-        $result = Healthprofessionalbridgeprocess::where($parametersToMatch)->get();
-
+         
+       $parametersToMatch=[];
+        
+        if($idApp==-1)
+             $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId];
+        else
+             $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+        $result =  DB::table('healthprofessionalbridgeprocess')
+            ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
+                 ->where($parametersToMatch)
+            ->select('healthprofessionalbridgeprocess.*', 'systemprocess.externalProcessId') 
+                 ->get();
         return $result;
     }
     public static function healthProfessionalBridgeProcessCreateModel($parametersToMatch,$parametersToStore)

@@ -15,19 +15,25 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['client']], function () {
     
     Route::get('/healthprofessionalbridgeprocess/','API\HealthprofessionalbridgeprocessAPIController@index');
+    Route::get('/healthprofessionalbridgeprocess/systemprocessid/{systemProcessId}','API\HealthprofessionalbridgeprocessAPIController@getIdHealthProfessionalBySystemProcessId');
     Route::get('/healthprofessionalbridgeprocess/{idHealthProfessional}','API\HealthprofessionalbridgeprocessAPIController@getSystemProcessIdByIdHealthProfessional');
     Route::get('/healthprofessionalbridgeprocess/{idHealthProfessional}/{systemProcessId}','API\HealthprofessionalbridgeprocessAPIController@getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId');
-    Route::get('/healthprofessionalbridgeprocess/healthProfessionals/{systemProcessId}','API\HealthprofessionalbridgeprocessAPIController@getIdHealthProfessionalBySystemProcessId');
     Route::post('/healthprofessionalbridgeprocess/','API\HealthprofessionalbridgeprocessAPIController@store');
 
     Route::get('/systemprocess/','API\SystemprocessAPIController@index');
     Route::get('/systemprocess/{externalProcessId}','API\SystemprocessAPIController@getSystemProcessByExternalProcessId');
+    Route::get('/systemprocess/systemid/{systemProcessId}','API\SystemprocessAPIController@getSystemProcessBySystemProcessId');
     Route::post('/systemprocess','API\SystemprocessAPIController@store');
+    
 
     Route::get('/processuser/','API\ProcessuserrelationAPIController@index');
     Route::get('/processuser/{idProcess}','API\ProcessuserrelationAPIController@getProcessUserInfoByIdProcess');
     Route::post('/processuser','API\ProcessuserrelationAPIController@store');
 });
+
+
+
+    Route::post('/verifytoken','API\SystemprocessAPIController@verifyToken');
 
 
 

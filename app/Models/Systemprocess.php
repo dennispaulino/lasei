@@ -27,16 +27,11 @@ class Systemprocess extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'externalProcessId' => 'int',
 		'idApp' => 'int'
 	];
 
 	protected $dates = [
 		'dateToken'
-	];
-
-	protected $hidden = [
-		'token'
 	];
 
 	protected $fillable = [
@@ -69,32 +64,51 @@ class Systemprocess extends Eloquent
                $systemProcessToCreate = Systemprocess::updateOrCreate($parametersToMatch, $parametersToStore);
                 $systemProcessToCreate->save();
                 if ($systemProcessToCreate->wasRecentlyCreated)
-                    return 1;
+                    return ['systemProcessId'=>$systemProcessToCreate->systemProcessId];
                 else
-                    return 0;
+                    return -2;
           
         } catch (\Exception $e) {
             return -1;
         }
     }
 
-    public static function updateProcessGenerateTokenModel($externalProcessId) {
+    public static function updateProcessGenerateTokenModel($systemProcessId,$idApp) {
 
         try {
-            $processExisted = Systemprocess::where(['externalProcessId' => $externalProcessId])->update(['dateToken' => new \DateTime(), 'token' => str_random(10)]);
+            $processExisted = Systemprocess::where(['systemProcessId' => $systemProcessId,'idApp'=>$idApp])->update(['dateToken' => new \DateTime(), 'token' => str_random(10)]);
+            $processExisted=Systemprocess::where(['systemProcessId' => $systemProcessId,'idApp'=>$idApp])->get();
+            
             if (count($processExisted) > 0) {
-                return 1;
+                return $processExisted[0]->token;
             }
-            return 0;
+            return null;
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return  null;
         }
     }
 
-    public static function checkIfTokenDateIsValid($externalProcessId, $tokenString) {
+    
+     public static function checkIfTokenIsValid($systemProcessId, $token,$idApp) {        
+         
+         $realIdApp=-1;
+         
+         if($idApp=="nanostimaTime1")
+             $realIdApp=1;
+        try {
+            $processExisted = Systemprocess::where(['systemProcessId' => $systemProcessId, 'state' => 1, 'token' => $token,'idApp'=>$realIdApp])->get();
+            if (count($processExisted)>0)
+                return 1;
+            else
+            return 0;
+        } catch (\Exception $e) {
+            return -1;
+        }
+    }
+    public static function checkIfTokenDateIsValid($externalProcessId, $tokenString,$idApp) {
         //compares if the actual date is still valid to the token date (expires after one day)          
         try {
-            $processExisted = Systemprocess::where(['externalProcessId' => $externalProcessId, 'state' => 1, 'token' => $tokenString])->get()->first();
+            $processExisted = Systemprocess::where(['externalProcessId' => $externalProcessId, 'state' => 1, 'token' => $tokenString,'idApp'=>$idApp])->get()->first();
             if ((time() - strtotime($processExisted->dateToken)) < 86400)
                 return 1;
 
