@@ -39,6 +39,15 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
         else
            return response()->json("", 204);
     }
+    public function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndExternalProcessId(Request $request,$idHealthProfessional,$externalProcessId) {
+        $idApp = $request->query('idApp', -1);
+        $result= Healthprofessionalbridgeprocess::getHealthProfessionalBridgeInfoByIdHealthProfessionalAndExternalProcessId($idHealthProfessional,$externalProcessId,$idApp);
+        if(count($result)>0)
+           return response()->json($result, 200);
+        else
+           return response()->json("", 204);
+    }
+
 
     public function store(Request $request) {
         //var that will store 0 if it cannot be found the user in database, >0 if the user could be found

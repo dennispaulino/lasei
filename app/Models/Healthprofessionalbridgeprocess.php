@@ -91,6 +91,25 @@ class Healthprofessionalbridgeprocess extends Model
                  ->get();
         return $result;
     }
+    
+    public static function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndExternalProcessId($idHealthProfessional,$externalProcessId,$idApp)
+    {
+         
+       $parametersToMatch=[];
+        
+        if($idApp==-1)
+             $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'systemprocess.externalProcessId' => $externalProcessId];
+        else
+             $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'systemprocess.externalProcessId' => $externalProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+        $result =  DB::table('healthprofessionalbridgeprocess')
+            ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
+                 ->where($parametersToMatch)
+            ->select('healthprofessionalbridgeprocess.*', 'systemprocess.externalProcessId') 
+                 ->get();
+        return $result;
+    }
+    
+    
     public static function healthProfessionalBridgeProcessCreateModel($parametersToMatch,$parametersToStore)
     {
         try {

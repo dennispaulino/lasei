@@ -18,6 +18,8 @@ Route::group(['middleware' => ['client']], function () {
     Route::get('/healthprofessionalbridgeprocess/systemprocessid/{systemProcessId}','API\HealthprofessionalbridgeprocessAPIController@getIdHealthProfessionalBySystemProcessId');
     Route::get('/healthprofessionalbridgeprocess/{idHealthProfessional}','API\HealthprofessionalbridgeprocessAPIController@getSystemProcessIdByIdHealthProfessional');
     Route::get('/healthprofessionalbridgeprocess/{idHealthProfessional}/{systemProcessId}','API\HealthprofessionalbridgeprocessAPIController@getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId');
+    Route::get('/healthprofessionalbridgeprocess/{idHealthProfessional}/externalprocessid/{externalprocessid}','API\HealthprofessionalbridgeprocessAPIController@getHealthProfessionalBridgeInfoByIdHealthProfessionalAndExternalProcessId');
+
     Route::post('/healthprofessionalbridgeprocess/','API\HealthprofessionalbridgeprocessAPIController@store');
 
     Route::get('/systemprocess/','API\SystemprocessAPIController@index');
