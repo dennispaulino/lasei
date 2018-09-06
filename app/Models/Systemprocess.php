@@ -105,10 +105,10 @@ class Systemprocess extends Eloquent
             return -1;
         }
     }
-    public static function checkIfTokenDateIsValid($externalProcessId, $tokenString,$idApp) {
+    public static function checkIfTokenDateIsValid($systemProcessId, $tokenString,$idApp) {
         //compares if the actual date is still valid to the token date (expires after one day)          
         try {
-            $processExisted = Systemprocess::where(['externalProcessId' => $externalProcessId, 'state' => 1, 'token' => $tokenString,'idApp'=>$idApp])->get()->first();
+            $processExisted = Systemprocess::where(['systemProcessId' => $systemProcessId, 'state' => 1, 'token' => $tokenString,'idApp'=>$idApp])->get()->first();
             if ((time() - strtotime($processExisted->dateToken)) < 86400)
                 return 1;
 
