@@ -95,7 +95,10 @@ class Systemprocess extends Eloquent
          
          if($idApp=="nanostimaTime1")
              $realIdApp=1;
-        try {
+         if($idApp=="nanostimaPrescription")
+             $realIdApp=2;
+         
+            try {
             $processExisted = Systemprocess::where(['systemProcessId' => $systemProcessId, 'state' => 1, 'token' => $token,'idApp'=>$realIdApp])->get();
             if (count($processExisted)>0)
                 return 1;
