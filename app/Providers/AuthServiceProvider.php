@@ -29,8 +29,9 @@ class AuthServiceProvider extends ServiceProvider
         Passport::refreshTokensExpireIn(now()->addHours(2));
         Passport::tokensCan([
             'web' => 'NanoSTIMA Web Platform',
-            'mobile-prescription' => 'Mobile app prescription',
-            'mobile-time' => 'Mobile app time' 
+            'mobile-prescription' => 'Mobile app',
+            'mobile-time' => 'Mobile app time',
+            'mobile' => 'Both mobile apps'   
         ]);
     }
 }

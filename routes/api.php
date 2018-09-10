@@ -33,7 +33,7 @@ Route::group(['middleware' => ['client:web']], function () {
     Route::post('/processuser','API\ProcessuserrelationAPIController@store');
 });
 
-Route::group(['middleware' => ['client:mobile-time']], function () {
+Route::group(['middleware' => ['client:mobile']], function () {
     
     Route::post('/verifytoken','API\SystemprocessAPIController@verifyToken');
 });
