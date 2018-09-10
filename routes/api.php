@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware' => ['client']], function () {
+Route::group(['middleware' => ['client:web']], function () {
     
     Route::get('/healthprofessionalbridgeprocess/','API\HealthprofessionalbridgeprocessAPIController@index');
     Route::get('/healthprofessionalbridgeprocess/systemprocessid/{systemProcessId}','API\HealthprofessionalbridgeprocessAPIController@getIdHealthProfessionalBySystemProcessId');
@@ -33,9 +33,10 @@ Route::group(['middleware' => ['client']], function () {
     Route::post('/processuser','API\ProcessuserrelationAPIController@store');
 });
 
-
-
+Route::group(['middleware' => ['client:mobile-time']], function () {
+    
     Route::post('/verifytoken','API\SystemprocessAPIController@verifyToken');
+});
 
 
 

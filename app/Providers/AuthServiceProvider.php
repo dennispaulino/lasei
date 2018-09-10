@@ -25,8 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Passport::routes(); 
-          Passport::tokensExpireIn(now()->addHours(2));
-
-         Passport::refreshTokensExpireIn(now()->addHours(2));
+        Passport::tokensExpireIn(now()->addHours(2));
+        Passport::refreshTokensExpireIn(now()->addHours(2));
+        Passport::tokensCan([
+            'web' => 'NanoSTIMA Web Platform',
+            'mobile-prescription' => 'Mobile app prescription',
+            'mobile-time' => 'Mobile app time' 
+        ]);
     }
 }
