@@ -21,7 +21,8 @@ class Healthprofessionalbridgeprocess extends Model
     public $fillable = [
         'idHealthProfessional',
         'systemProcessId',
-        'idApp'
+        'idApp',
+        'state'
     ];
 
     /**
@@ -50,6 +51,8 @@ class Healthprofessionalbridgeprocess extends Model
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional' => $idHealthProfessional];
         else
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional' => $idHealthProfessional,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+        array_merge($parametersToMatch, ['state'=>1]);
+        
         $result =  DB::table('healthprofessionalbridgeprocess')
              ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
             ->where($parametersToMatch)   
@@ -66,7 +69,7 @@ class Healthprofessionalbridgeprocess extends Model
              $parametersToMatch = ['healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId];
         else
              $parametersToMatch = ['healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
-       
+         array_merge($parametersToMatch, ['state'=>1]);
           $result =  DB::table('healthprofessionalbridgeprocess')
              ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
              ->where($parametersToMatch)   
@@ -84,6 +87,8 @@ class Healthprofessionalbridgeprocess extends Model
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId];
         else
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+       
+          array_merge($parametersToMatch, ['state'=>1]);
         $result =  DB::table('healthprofessionalbridgeprocess')
             ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
                  ->where($parametersToMatch)
@@ -101,6 +106,8 @@ class Healthprofessionalbridgeprocess extends Model
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'systemprocess.externalProcessId' => $externalProcessId];
         else
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'systemprocess.externalProcessId' => $externalProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
+        
+          array_merge($parametersToMatch, ['state'=>1]);
         $result =  DB::table('healthprofessionalbridgeprocess')
             ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
                  ->where($parametersToMatch)

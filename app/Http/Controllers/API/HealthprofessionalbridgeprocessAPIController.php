@@ -83,10 +83,10 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
             $parametersToStore = ['idHealthProfessional' => $request->idHealthProfessional, 'systemProcessId' => $request->systemProcessId];
            
             if($request->has('idApp'))
-                array_push ($parametersToStore,['idApp'=>$request->idApp]);
+                array_merge ($parametersToStore,['idApp'=>$request->idApp]);
           
             if($request->has('state'))
-                array_push ($parametersToStore,['idApp'=>$request->state]);
+                array_merge ($parametersToStore,['idApp'=>$request->state]);
             
             
               if ($this->validateValue($request->idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($request->systemProcessId, 'required|numeric')&& $this->validateValue($request->idHealthProfessional, 'required|numeric')&&$this->validateValue($request->state, "required|max:255|regex:[A-Za-z1-9 ]"))
