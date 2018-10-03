@@ -15,7 +15,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
     }
     public function getSystemProcessIdByIdHealthProfessional(Request $request,$idHealthProfessional) 
     {
-      
+       $result=[];
         $idApp = $request->query('idApp', -1);
 
         if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($idHealthProfessional, 'required|numeric'))
@@ -30,7 +30,8 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
     }
 
     public function getIdHealthProfessionalBySystemProcessId(Request $request,$systemProcessId) {
-         $idApp = $request->query('idApp', -1);
+         $result=[]; 
+        $idApp = $request->query('idApp', -1);
           
         if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($systemProcessId, 'required|numeric'))
              $result= Healthprofessionalbridgeprocess::getIdHealthProfessionalBySystemProcessIdModel($systemProcessId,$idApp);
@@ -45,6 +46,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
     }
 
     public function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId(Request $request,$idHealthProfessional,$systemProcessId) {
+         $result=[];
         $idApp = $request->query('idApp', -1);
         
           if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($systemProcessId, 'required|numeric')&& $this->validateValue($idHealthProfessional, 'required|numeric'))
@@ -58,6 +60,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
            return response()->json("", 204);
     }
     public function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndExternalProcessId(Request $request,$idHealthProfessional,$externalProcessId) {
+         $result=[];
         $idApp = $request->query('idApp', -1);
         
         if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($externalProcessId, 'required|numeric')&& $this->validateValue($idHealthProfessional, 'required|numeric'))
@@ -75,7 +78,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
     public function store(Request $request) {
         //var that will store 0 if it cannot be found the user in database, >0 if the user could be found
         //if the request from the client side has the property 'date' and 'idUser', if not it will not save the request in the database        
-
+        $result=-1;
         if ($request->has('idHealthProfessional') && $request->has('systemProcessId')) {
             
             $parametersToMatch = ['idHealthProfessional' => $request->idHealthProfessional, 'systemProcessId' => $request->systemProcessId];
