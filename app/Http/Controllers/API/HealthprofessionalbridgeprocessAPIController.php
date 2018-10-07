@@ -18,7 +18,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
        $result=[];
         $idApp = $request->query('idApp', -1);
 
-        if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($idHealthProfessional, 'required|numeric'))
+        if ($this->validateValue($idApp, "alpha_num") && $this->validateValue($idHealthProfessional, 'required|numeric'))
             $result = Healthprofessionalbridgeprocess::getSystemProcessIdByIdHealthProfessionalModel($idHealthProfessional, $idApp);
         else 
              return response()->json("", 422);
@@ -30,10 +30,10 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
     }
 
     public function getIdHealthProfessionalBySystemProcessId(Request $request,$systemProcessId) {
-         $result=[]; 
-        $idApp = $request->query('idApp', -1);
+        $result=[]; 
+        $idApp = $request->query('idApp',-1);
           
-        if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($systemProcessId, 'required|numeric'))
+        if ($this->validateValue($idApp, "alpha_num") && $this->validateValue($systemProcessId, 'required|numeric'))
              $result= Healthprofessionalbridgeprocess::getIdHealthProfessionalBySystemProcessIdModel($systemProcessId,$idApp);
         else 
              return response()->json("", 422); 
@@ -49,7 +49,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
          $result=[];
         $idApp = $request->query('idApp', -1);
         
-          if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($systemProcessId, 'required|numeric')&& $this->validateValue($idHealthProfessional, 'required|numeric'))
+          if ($this->validateValue($idApp, "alpha_num") && $this->validateValue($systemProcessId, 'required|numeric')&& $this->validateValue($idHealthProfessional, 'required|numeric'))
               $result= Healthprofessionalbridgeprocess::getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId,$idApp);
          else 
              return response()->json("", 422); 
@@ -63,7 +63,7 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
          $result=[];
         $idApp = $request->query('idApp', -1);
         
-        if ($this->validateValue($idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($externalProcessId, 'required|numeric')&& $this->validateValue($idHealthProfessional, 'required|numeric'))
+        if ($this->validateValue($idApp, "alpha_num") && $this->validateValue($externalProcessId, 'required|numeric')&& $this->validateValue($idHealthProfessional, 'required|numeric'))
               $result= Healthprofessionalbridgeprocess::getHealthProfessionalBridgeInfoByIdHealthProfessionalAndExternalProcessId($idHealthProfessional,$externalProcessId,$idApp);
         else 
              return response()->json("", 422); 
@@ -76,38 +76,40 @@ class HealthprofessionalbridgeprocessAPIController extends Controller
 
 
     public function store(Request $request) {
-        //var that will store 0 if it cannot be found the user in database, >0 if the user could be found
-        //if the request from the client side has the property 'date' and 'idUser', if not it will not save the request in the database        
-        $result=-1;
+        $result = -1;
+        $idApp = 1; //optional
+        $state = 1; //1-> this record is active
+
+
         if ($request->has('idHealthProfessional') && $request->has('systemProcessId')) {
-            
+
             $parametersToMatch = ['idHealthProfessional' => $request->idHealthProfessional, 'systemProcessId' => $request->systemProcessId];
-             
+
             $parametersToStore = ['idHealthProfessional' => $request->idHealthProfessional, 'systemProcessId' => $request->systemProcessId];
-           
-            if($request->has('idApp'))
-                array_merge ($parametersToStore,['idApp'=>$request->idApp]);
-          
-            if($request->has('state'))
-                array_merge ($parametersToStore,['idApp'=>$request->state]);
-            
-            
-              if ($this->validateValue($request->idApp, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($request->systemProcessId, 'required|numeric')&& $this->validateValue($request->idHealthProfessional, 'required|numeric')&&$this->validateValue($request->state, "required|max:255|regex:[A-Za-z1-9 ]"))
-                  $result= Healthprofessionalbridgeprocess::healthProfessionalBridgeProcessCreateModel($parametersToMatch,$parametersToStore);
-              else 
-                 return response()->json("", 422); 
-            
-            if ($result == 1) 
-                return response()->json("Health Professional Bridge Process was created!", 201);
-            else if ($result == 2) 
-                return response()->json("Health Professional Bridge Process already existed", 208);
-        }     
-       
-        return response()->json("", 204);
+
+            if ($request->has('idApp')) {
+                $idApp = $request->idApp;
+                $parametersToStore = array_merge($parametersToStore, ['idApp' => $idApp]);
+            }
+            if ($request->has('state')) {
+                $state = $request->state;
+                $parametersToStore = array_merge($parametersToStore, ['state' => $state]);
+            }
+
+            if ($this->validateValue($idApp, "alpha_num") && $this->validateValue($request->systemProcessId, 'required|numeric') && $this->validateValue($request->idHealthProfessional, 'required|numeric') && $this->validateValue($state, "alpha_num")) {
+                $result = Healthprofessionalbridgeprocess::healthProfessionalBridgeProcessCreateModel($parametersToMatch, $parametersToStore);    
+                if ($result == 1)
+                    return response()->json("Health Professional Bridge Process was created!", 201);
+                else if ($result == 2)
+                    return response()->json("Health Professional Bridge Process already existed", 208);
+                else
+                    return response()->json("", 204);
+            }
+        }
+
+        return response()->json("", 422);
     }
-    
-   
-    
+
     private static function validateValue($value,$rules)
     {
         //needs to be an assoc

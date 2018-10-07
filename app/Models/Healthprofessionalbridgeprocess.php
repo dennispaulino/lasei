@@ -11,13 +11,15 @@ use Illuminate\Support\Facades\DB;
  * @version July 4, 2018, 1:59 pm UTC
  *
  */
+use App\Traits;
 class Healthprofessionalbridgeprocess extends Model
 {
+    use Traits\HasCompositePrimaryKey;
 
     public $table = 'healthprofessionalbridgeprocess';
     public $timestamps = false;
-
-
+    protected $primaryKey = ['idHealthProfessional','systemProcessId'];
+    public $incrementing = false;
     public $fillable = [
         'idHealthProfessional',
         'systemProcessId',
@@ -126,8 +128,7 @@ class Healthprofessionalbridgeprocess extends Model
             $systemProcessCheck = Systemprocess::getSystemProcessBySystemProcessIdModel($parametersToMatch['systemProcessId']);
 
             if (count($systemProcessCheck) > 0) {
-                $healthProfessionalBridgeProcessToCreate = Healthprofessionalbridgeprocess::firstOrCreate($parametersToStore);
-                $healthProfessionalBridgeProcessToCreate->save();
+                $healthProfessionalBridgeProcessToCreate = Healthprofessionalbridgeprocess::updateOrCreate($parametersToMatch,$parametersToStore);
                 if ($healthProfessionalBridgeProcessToCreate->wasRecentlyCreated)
                     return 1;
                 else 
@@ -137,7 +138,7 @@ class Healthprofessionalbridgeprocess extends Model
              return 0;
         } catch(\Exception $e)
         {
-            return $e;
+            return -1;
         }
    }
 }
