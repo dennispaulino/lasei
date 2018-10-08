@@ -83,15 +83,14 @@ class Healthprofessionalbridgeprocess extends Model
     
     public static function getHealthProfessionalBridgeInfoByIdHealthProfessionalAndSystemProcessId($idHealthProfessional,$systemProcessId,$idApp)
     {
-         
-       $parametersToMatch=[];
+        $parametersToMatch=[];
         
         if($idApp==-1)
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId];
         else
              $parametersToMatch = ['healthprofessionalbridgeprocess.idHealthProfessional'=>$idHealthProfessional,'healthprofessionalbridgeprocess.systemProcessId' => $systemProcessId,'healthprofessionalbridgeprocess.idApp'=>$idApp];
        
-           $parametersToMatch= array_merge($parametersToMatch, ['healthprofessionalbridgeprocess.state'=>1]);
+        $parametersToMatch= array_merge($parametersToMatch, ['healthprofessionalbridgeprocess.state'=>1]);
         $result =  DB::table('healthprofessionalbridgeprocess')
             ->join('systemprocess', 'healthprofessionalbridgeprocess.systemProcessId', '=', 'systemprocess.systemProcessId')  
                  ->where($parametersToMatch)

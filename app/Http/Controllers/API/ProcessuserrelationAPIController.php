@@ -16,7 +16,7 @@ class ProcessuserrelationAPIController extends Controller
     public function getProcessUserInfoByIdProcess($idProcess) {
         
          $result=[];
-        if ($this->validateValue($idProcess, "required|max:255|regex:[A-Za-z1-9 ]"))
+        if ($this->validateValue($idProcess, "alpha_num"))
             $result = Processuserrelation::getIdUserByIdProcessModel($idProcess);
         else 
             return response()->json("", 422); 
@@ -30,7 +30,7 @@ class ProcessuserrelationAPIController extends Controller
 
     public function getProcessUserInfoByIdUser($idUser) {
          $result=[];
-        if ($this->validateValue($idUser, "required|max:255|regex:[A-Za-z1-9 ]"))
+        if ($this->validateValue($idUser, "alpha_num"))
            $result= Processuserrelation::getIdProcessByIdUserModel($idUser);
         else 
             return response()->json("", 422); 
@@ -51,7 +51,7 @@ class ProcessuserrelationAPIController extends Controller
             $parametersToStore = ['idUser' => $request->idUser, 'idProcess' => $request->idProcess];
            
             
-            if ($this->validateValue($idUser, "required|max:255|regex:[A-Za-z1-9 ]")&&$this->validateValue($idProcess, "required|max:255|regex:[A-Za-z1-9 ]"))
+            if ($this->validateValue($idUser, "alpha_num")&&$this->validateValue($idProcess, "alpha_num"))
                 $result= Processuserrelation::userProcessRelationCreateorUpdateModel($parametersToMatch,$parametersToStore);
             else 
                  return response()->json("", 422); 

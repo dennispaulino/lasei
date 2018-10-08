@@ -14,7 +14,7 @@ class SystemprocessAPIController extends Controller
     }
     public function getSystemProcessByExternalProcessId($externalProcessId) {
         $result=[];
-        if ($this->validateValue($externalProcessId, "required|max:255|regex:[A-Za-z1-9 ]"))
+        if ($this->validateValue($externalProcessId, "alpha_num"))
            $result= Systemprocess::getSystemProcessByExternalProcessIdModel($externalProcessId);
         else
             return response()->json("", 422);
@@ -27,7 +27,7 @@ class SystemprocessAPIController extends Controller
 
     public function getSystemProcessBySystemProcessId($systemProcessId) {
         $result=[];
-        if ($this->validateValue($systemProcessId, "required|max:255|regex:[A-Za-z1-9 ]"))
+        if ($this->validateValue($systemProcessId, "alpha_num"))
              $result= Systemprocess::getSystemProcessBySystemProcessIdModel($systemProcessId);
         else
             return response()->json("", 422);
@@ -50,7 +50,7 @@ class SystemprocessAPIController extends Controller
 
             $parametersToStore = ['externalProcessId' => $request->externalProcessId, 'idApp' => $request->idApp];
 
-            if ($this->validateValue($request->externalProcessId, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($request->idApp, "required|max:255|regex:[A-Za-z1-9 ]"))
+            if ($this->validateValue($request->externalProcessId, "alpha_num") && $this->validateValue($request->idApp, "alpha_num"))
                 $result = Systemprocess::systemProcessIdCreateorUpdateModel($parametersToMatch, $parametersToStore);
             else
                 return response()->json("", 422);
@@ -63,7 +63,7 @@ class SystemprocessAPIController extends Controller
                 return response()->json($result, 201);
         }
         else if ($request->has('systemProcessId') && $request->has('idApp')) {
-            if ($this->validateValue($request->systemProcessId, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($request->idApp, "required|max:255|regex:[A-Za-z1-9 ]"))
+            if ($this->validateValue($request->systemProcessId, "alpha_num") && $this->validateValue($request->idApp, "alpha_num"))
                 $result = Systemprocess::updateProcessGenerateTokenModel($request->systemProcessId, $request->idApp);
             else
                 return response()->json("", 422);
@@ -83,7 +83,7 @@ class SystemprocessAPIController extends Controller
         $result=-1;
         if ($request->has('token') && $request->has('systemProcessId') && $request->has('idApp')) {  
         
-            if ($this->validateValue($request->systemProcessId, "required|max:255|regex:[A-Za-z1-9 ]") && $this->validateValue($request->token, "required|max:255|regex:[A-Za-z1-9 ]")&& $this->validateValue($request->idApp, "required|max:255|regex:[A-Za-z1-9 ]"))
+            if ($this->validateValue($request->systemProcessId, "alpha_num") && $this->validateValue($request->token, "alpha_num")&& $this->validateValue($request->idApp, "alpha_num"))
                  $result= Systemprocess::checkIfTokenIsValid($request->systemProcessId,$request->token,$request->idApp);
             else
                 return response()->json("", 422);
