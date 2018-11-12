@@ -48,7 +48,7 @@ class SystemprocessAPIController extends Controller
 
             $parametersToMatch = ['externalProcessId' => $request->externalProcessId];
 
-            $parametersToStore = ['externalProcessId' => $request->externalProcessId, 'idApp' => $request->idApp];
+            $parametersToStore = ['externalProcessId' => $request->externalProcessId, 'idApp' => $request->idApp,'dateToken' => new \DateTime(), 'token' => str_random(10)];
 
             if ($this->validateValue($request->externalProcessId, "alpha_num") && $this->validateValue($request->idApp, "alpha_num"))
                 $result = Systemprocess::systemProcessIdCreateorUpdateModel($parametersToMatch, $parametersToStore);
